@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>D3 Demo</title>
+    <style>
+        div.bar {
+            display: inline-block;
+            width: 20px;
+            height: 75px;
+            background-color: teal;
+            margin-right: 2px;
+        }
+        </style>
+    <script src="lib/d3.v3.js"></script>
+</head>
+
+<body>
+    <script>
+    var data = [5, 10, 15, 20, 25];
+
+    d3.select("body")
+        .selectAll("div")
+        .data(data)
+        .enter()
+        .append("div")
+        .attr("class", "bar")
+        .style("height", function(d) {
+            // increase the difference between each data point by 5 to
+            // create a better visualization of the data
+            return (d * 5) + "px";
+        });
+    </script>
+</body>
+
+</html>

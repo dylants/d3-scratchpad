@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>D3 Demo</title>
+    <script src="lib/d3.v3.js"></script>
+</head>
+
+<body>
+    <script>
+    var data = [5, 10, 15, 20, 25];
+
+    d3.select("body") // finds the body element in the DOM
+        .selectAll("p") // selects all the paragraphs in the DOM, but since none exist
+                        // yet, this returns an empty selection (the paragraphs that
+                        // will exist soon). If any existed, it would use that first.
+        .data(data) // iterates over the data passing each one to the remaining functions
+        .enter() // if more data elements exist than DOM elements, it creates a new
+                 // placeholder element to use, else it uses the existing one
+        .append("p") // inserts a paragraph in this new placeholder element
+        .text(function(dataElement) { // adds text to this paragraph
+            return "Data element: " + dataElement; // the text to add includes the data
+                                                   // element we currently see
+        })
+        .style("color", function(dataElement) { // adds style to the text
+            if (dataElement > 15) { // the style is based off the current data element
+                return "red";
+            } else {
+                return "black";
+            }
+        });
+    </script>
+</body>
+
+</html>
