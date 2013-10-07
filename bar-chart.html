@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>D3 Demo</title>
+    <script src="lib/d3.v3.js"></script>
+</head>
+
+<body>
+    <script>
+        var data, svgWidth, svgHeight, barPadding, svg;
+
+        // our initial data set
+        data = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+        // the SVG canvas dimensions
+        svgWidth = 500;
+        svgHeight = 100;
+        barPadding = 1;
+
+        // create the SVG canvas
+        svg = d3.select("body")
+                .append("svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
+
+        // create the bar chart
+        svg.selectAll("rect")
+           .data(data)
+           .enter()
+           .append("rect")
+           .attr("x", function(d, i) {
+                // each bar should start at the index of the data element
+                // times the size of each bar. Each bar should be equal sized
+                // based off the size of the canvas (svgWidth / data.length)
+                return i * (svgWidth / data.length);
+           })
+           .attr("y", function(d) {
+                // Because SVG draws from the top down, we must start the bar
+                // at the max of the data point, essentially moving it down
+                // manually. But the amount we move it down is based on the
+                // height of the canvas. If the canvas is 100 height, and our
+                // bar is 5 height, we need to start drawing it at 95. So we
+                // subtract the height of the bar from the height of the canvas.
+                // (multiply height of bar by 4 to scale bigger)
+                return svgHeight - (d * 4);
+           })
+           // Here we want the width to actually be the size we agreed upon
+           // earlier, minus a bar padding size so that there's a little sliver
+           // of light between each bar
+           .attr("width", (svgWidth / data.length) - barPadding)
+           .attr("height", function(d, i) {
+                // The height of the bar is simply the height of the data point
+                // (multiply by 4 to scale bigger)
+                return d * 4;
+           })
+           .attr("fill", "blue");
+
+        // create some labels for our bar chart
+        svg.selectAll("text")
+           .data(data)
+           .enter()
+           .append("text")
+           .text(function(d) {
+                return d;
+           })
+           // center the text within the rectangle
+           .attr("text-anchor", "middle")
+           .attr("x", function(d, i) {
+                var leftmostXValue, widthOfBar;
+
+                // compute the left side of each rectangle
+                leftmostXValue = i * (svgWidth / data.length);
+                // the width of the bar is the same as the width
+                // property we calculated earlier
+                widthOfBar = (svgWidth / data.length) - barPadding;
+
+                return leftmostXValue + widthOfBar / 2;
+           })
+           .attr("y", function(d) {
+                // same as the starting point of the y value for the rectangle
+                // but add 14 to move it inside the rectangle a bit
+                return svgHeight - (d * 4) + 14;
+           })
+           // pretty it up
+           .attr("font-family", "sans-serif")
+           .attr("font-size", "11px")
+           .attr("fill", "white");
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>D3 Demo</title>
+    <script src="lib/d3.v3.js"></script>
+</head>
+
+<body>
+    <script>
+        var data, width, height, svg, circles;
+
+        data = [5, 10, 15, 20, 25];
+
+        width = 500;
+        height = 100;
+
+        // Appends an SVG element to the body, before the body's end tag
+        svg = d3.select("body").append("svg");
+
+        // set the width and height of our SVG canvas
+        svg.attr("width", width)
+           .attr("height", height);
+
+        // create a circle for each data point
+        circles = svg.selectAll("circle") // returns references to the circles that do not
+                                          // yet exist, but will be created in our SVG
+                     .data(data)
+                     .enter()
+                     .append("circle"); // creates a new circle for each data point
+
+        // for each circle, set the center X value taking in the current data point
+        // along with the current index of circles
+        circles.attr("cx", function(dataPoint, index) {
+                    // set the center X to the index * 50, adding 25 to move it
+                    // a constant (in the case i === 0)
+                    return (index * 50) + 25;
+                })
+                // set the center Y value to the center of our SVG (half the height)
+                .attr("cy", height / 2)
+                // the radius of each circle should be the data point
+                // (bigger the data point, the bigger the circle)
+                .attr("r", function(dataPoint) {
+                    return dataPoint;
+                })
+                // color the circles yellow with an orange outline
+                .attr("fill", "yellow")
+                .attr("stroke", "orange")
+                .attr("stroke-width", 2);
+    </script>
+</body>
+
+</html>
